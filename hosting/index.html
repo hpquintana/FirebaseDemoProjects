@@ -1,65 +1,268 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+<html lang="en">
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/5.7.3/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/5.7.3/firebase-auth.js"></script>
-    <script defer src="/__/firebase/5.7.3/firebase-database.js"></script>
-    <script defer src="/__/firebase/5.7.3/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/5.7.3/firebase-storage.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <!-- <link rel="stylesheet" href="css/flipclock.css"> -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.min.js"></script>
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+    <link rel="stylesheet" href="css/clock-style.css">
+    <title>Title</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">Pomodoro Timer</a>
+
+
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- <div class="d-flex justify-content-center"> -->
+
+    <div class="text-center">
+        <h2 class="text-center" id='state-div'></h2>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+    <div class="flip-counter clock flip-clock-wrapper"></div>
+    <div class="message"></div>
+    <div class="buttons text-center button-container">
+        <button class="start btn btn-outline-success">Start</button>
+        <button class="stop btn btn-outline-danger">Stop</button>
+        <button class="reset btn btn-outline-dark">Reset</button>
+    </div>
 
-        try {
-          let app = firebase.app();
-          let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+    <div class="buttons text-center button-container">
+        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#settingsModal">
+            Settings
+        </button>
+    </div>
+
+
+    <!-- The Modal -->
+    <div class="modal fade" id="settingsModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Pomodoro Settings</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>Work Time</label>
+                            <input type="number" class="form-control" id="work-time" value="25" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Pomodoro Cycles</label>
+                            <input type="number" class="form-control" id="pomodoro-cycles" value="4" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Short Break Time</label>
+                            <input type="number" class="form-control" id="break-time" value="5" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Long Break Time</label>
+                            <input type="number" class="form-control" id="long-break-time" value="5" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button id="saveButton" type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <!-- <script src="js/flipclock.js"></script> -->
+
+    <script type="text/javascript">
+        var clock;
+
+        //control variables
+        var workTime;
+        var breakTime;
+        var longBreakTime;
+        var cyclesCompleted;
+        var targetCycles;
+        var currentState;
+        var prestige;
+
+        //html elements
+        var longBreakDiv;
+        var workDiv;
+        var breakDiv;
+        var cyclesDiv;
+        var stateDiv;
+
+        $(document).ready(function () {
+            init();
+        });
+
+        function init() {
+            errorMsgDiv = $('#settings-message');
+            workDiv = $('#work-time');
+            breakDiv = $('#break-time');
+            longBreakDiv = $('#long-break-time');
+            cyclesDiv = $('#pomodoro-cycles');
+            stateDiv = $('#state-div');
+
+            $('.start').click(function (e) {
+                clock.start();
+            });
+
+            $('.stop').click(function (e) {
+                clock.stop();
+            });
+
+            $('.reset').click(function (e) {
+                updateClock();
+            });
+
+            $('#saveButton').click(function (e) {
+                updateClock();
+            });
+
+            prestige = 0;
+            updateClock();
         }
-      });
+
+        function updateClock() {
+            isOnBreak = false;
+            cyclesCompleted = 0;
+            isClockRunning = false;
+            // workTime = workDiv.val() * 60;
+            workTime = workDiv.val();
+            // breakTime = breakDiv.val() * 60;
+            breakTime = breakDiv.val();
+            // longBreakTime = longBreakDiv.val() * 60;
+            longBreakTime = longBreakDiv.val();
+            targetCycles = cyclesDiv.val();
+            cyclesCompleted = 0;
+            currentState = 'work';
+            stateDiv.text(`On Pomodoro cycle 1 out of ${targetCycles}`);
+
+            initClock(workTime);
+        }
+
+        function displaySettingsError(wTime, bTime, pCycles) {
+            var workError = false;
+            var breakError = false;
+            var cyclesError = false;
+
+            if (Number.isInteger(wTime)) {
+                workError = true;
+            }
+            if (Number.isInteger(bTime)) {
+                bTime = true;
+            }
+            if (Number.isInteger(pCycles)) {
+                pCycles = true;
+            }
+
+            if (!workError && !breakError && !cyclesError) {
+                errorMsgDiv.text('Check your input(s)!');
+            } else {
+                errorMsgDiv.text('Unknown Error!');
+            }
+        }
+
+        function initClock(time) {
+            clock = $('.clock').FlipClock(time, {
+                clockFace: 'MinuteCounter',
+                countdown: true,
+                autoStart: false,
+                callbacks: {
+                    start: function () {
+                        //
+                    },
+                    stop: function () {
+                        var stopTime = clock.getTime();
+
+                        if (stopTime <= 0) {
+                            handleTimerFinish();
+                        }
+                    }
+                }
+            });
+        }
+
+        function handleTimerFinish() {
+            if (currentState === 'work') {
+                cyclesCompleted++;
+
+                if (cyclesCompleted >= targetCycles) {
+                    currentState = 'longBreak';
+                    prestige++;
+                    cyclesCompleted = 0;
+                    initClock(longBreakTime);
+                    stateDiv.text('On a long break!');
+                } else {
+                    currentState = 'break';
+                    initClock(breakTime);
+                    stateDiv.text(
+                        `On a break,${cyclesCompleted} out of ${targetCycles} completed`
+                    );
+                }
+
+            } else {
+                currentState = 'work';
+                initClock(workTime);
+                stateDiv.text(`On Pomodoro cycle ${cyclesCompleted + 1} out of ${targetCycles}`);
+            }
+        }
+
+        function getMethods(obj) {
+            var result = [];
+            for (var id in obj) {
+                try {
+                    if (typeof (obj[id]) == "function") {
+                        result.push(id + ": " + obj[id].toString());
+                    }
+                } catch (err) {
+                    result.push(id + ": inaccessible");
+                }
+            }
+            return result;
+        }
     </script>
-  </body>
+</body>
+
 </html>
